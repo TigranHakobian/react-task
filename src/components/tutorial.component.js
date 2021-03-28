@@ -49,10 +49,6 @@ export default class Tutorial extends Component {
     });
   }
 
-
-
-
-
   updateTutorial() {
     const data = {
       title: this.state.currentTutorial.title,
