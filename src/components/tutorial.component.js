@@ -94,9 +94,6 @@ export default class Tutorial extends Component {
                   onChange={this.onChangeTitle}
                 />
               </div>
-
-
-
             </form>
 
             <button
