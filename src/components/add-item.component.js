@@ -1,13 +1,13 @@
 import React, { Component } from "react";
-import TutorialDataService from "../services/tutorial.service";
+import ItemlDataService from "../services/item.service";
 
-export default class AddTutorial extends Component {
+class AddItem extends Component {
   constructor(props) {
     super(props);
     this.onChangeTitle = this.onChangeTitle.bind(this);
 
-    this.saveTutorial = this.saveTutorial.bind(this);
-    this.newTutorial = this.newTutorial.bind(this);
+    this.saveItem = this.saveItem.bind(this);
+    this.newItem = this.newItem.bind(this);
 
     this.state = {
       title: "",
@@ -22,13 +22,13 @@ export default class AddTutorial extends Component {
   }
 
 
-  saveTutorial() {
+  saveItem() {
     let data = {
       title: this.state.title,
       published: false
     };
 
-    TutorialDataService.create(data)
+    ItemlDataService.create(data)
       .then(() => {
         console.log("Created new item successfully!");
         this.setState({
@@ -40,7 +40,7 @@ export default class AddTutorial extends Component {
       });
   }
 
-  newTutorial() {
+  newItem() {
     this.setState({
       title: "",
       submitted: false,
@@ -53,7 +53,7 @@ export default class AddTutorial extends Component {
         {this.state.submitted ? (
           <div>
             <h4>You submitted successfully!</h4>
-            <button className="btn btn-success" onClick={this.newTutorial}>
+            <button className="btn btn-success" onClick={this.newItem}>
               Add
             </button>
           </div>
@@ -65,14 +65,12 @@ export default class AddTutorial extends Component {
                 type="text"
                 className="form-control"
                 id="title"
-                required
                 value={this.state.title}
                 onChange={this.onChangeTitle}
                 name="title"
               />
             </div>
-
-            <button onClick={this.saveTutorial} className="btn btn-success">
+            <button onClick={this.saveItem} className="btn btn-success">
               Submit
             </button>
           </div>
@@ -81,3 +79,5 @@ export default class AddTutorial extends Component {
     );
   }
 }
+
+export default  AddItem

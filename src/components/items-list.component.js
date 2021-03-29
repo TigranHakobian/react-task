@@ -1,65 +1,64 @@
 import React, { Component } from "react";
-import TutorialDataService from "../services/tutorial.service";
+import ItemlDataService from "../services/item.service";
+import Items from "./items.component";
 
-import Tutorial from "./tutorial.component";
-
-export default class TutorialsList extends Component {
+class ItemList extends Component {
   constructor(props) {
     super(props);
     this.refreshList = this.refreshList.bind(this);
-    this.setActiveTutorial = this.setActiveTutorial.bind(this);
-    this.removeAllTutorials = this.removeAllTutorials.bind(this);
+    this.setActiveItem = this.setActiveItem.bind(this);
+    this.removeAllItems = this.removeAllItems.bind(this);
     this.onDataChange = this.onDataChange.bind(this);
 
     this.state = {
-      tutorials: [],
+      items: [],
       currentTutorial: null,
       currentIndex: -1,
     };
   }
 
   componentDidMount() {
-    TutorialDataService.getAll().on("value", this.onDataChange);
+    ItemlDataService.getAll().on("value", this.onDataChange);
   }
 
   componentWillUnmount() {
-    TutorialDataService.getAll().off("value", this.onDataChange);
+    ItemlDataService.getAll().off("value", this.onDataChange);
   }
 
-  onDataChange(items) {
-    let tutorials = [];
+  onDataChange(list) {
 
-    items.forEach((item) => {
+    let items = [];
+
+    list.forEach((item) => {
       let key = item.key;
       let data = item.val();
-      tutorials.push({
+      items.push({
         key: key,
         title: data.title,
         published: data.published,
       });
     });
-
     this.setState({
-      tutorials: tutorials,
+      items: items,
     });
   }
 
   refreshList() {
     this.setState({
-      currentTutorial: null,
+      currentItem: null,
       currentIndex: -1,
     });
   }
 
-  setActiveTutorial(tutorial, index) {
+  setActiveItem(tutorial, index) {
     this.setState({
-      currentTutorial: tutorial,
+      currentItem: tutorial,
       currentIndex: index,
     });
   }
 
-  removeAllTutorials() {
-    TutorialDataService.deleteAll()
+  removeAllItems() {
+    ItemlDataService.deleteAll()
       .then(() => {
         this.refreshList();
       })
@@ -69,46 +68,45 @@ export default class TutorialsList extends Component {
   }
 
   render() {
-    const { tutorials, currentTutorial, currentIndex } = this.state;
+    const { items, currentItem, currentIndex } = this.state;
 
     return (
       <div className="list row">
         <div className="col-md-6">
-          <h4>Tutorials List</h4>
+          <h4>items List</h4>
 
           <ul className="list-group">
-            {tutorials &&
-              tutorials.map((tutorial, index) => (
+            {items &&
+              items.map((tutorial, index) => (
                 <li
                   className={
                     "list-group-item " +
                     (index === currentIndex ? "active" : "")
                   }
-                  onClick={() => this.setActiveTutorial(tutorial, index)}
+                  onClick={() => this.setActiveItem(tutorial, index)}
                   key={index}
                 >
                   {tutorial.title}
                 </li>
               ))}
           </ul>
-
           <button
             className="m-3 btn btn-sm btn-danger"
-            onClick={this.removeAllTutorials}
+            onClick={this.removeAllItems}
           >
             Remove All
           </button>
         </div>
         <div className="col-md-6">
-          {currentTutorial ? (
-            <Tutorial
-              tutorial={currentTutorial}
+          {currentItem ? (
+            <Items
+              tutorial={currentItem}
               refreshList={this.refreshList}
             />
           ) : (
             <div>
               <br />
-              <p>Please click on a Tutorial...</p>
+              <p>Please click on a item...</p>
             </div>
           )}
         </div>
@@ -116,3 +114,5 @@ export default class TutorialsList extends Component {
     );
   }
 }
+
+export default ItemList

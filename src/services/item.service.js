@@ -2,14 +2,14 @@ import firebase from "../firebase";
 
 const db = firebase.ref("/tutorials");
 
-class TutorialDataService {
+class ItemlDataService {
   getAll() {
     return db;
   }
 
-  create(tutorial) {
-    console.log(tutorial)
-    return db.push(tutorial);
+  create(item) {
+    console.log(item)
+    return db.push(item);
   }
 
   update(key, value) {
@@ -27,4 +27,4 @@ class TutorialDataService {
   }
 }
 
-export default new TutorialDataService();
+export default new ItemlDataService();

@@ -1,15 +1,15 @@
 import React, { Component } from "react";
-import TutorialDataService from "../services/tutorial.service";
+import ItemlDataService from "../services/item.service";
 
-export default class Tutorial extends Component {
+class Items extends Component {
   constructor(props) {
     super(props);
     this.onChangeTitle = this.onChangeTitle.bind(this);
-    this.updateTutorial = this.updateTutorial.bind(this);
-    this.deleteTutorial = this.deleteTutorial.bind(this);
+    this.updateItem = this.updateItem.bind(this);
+    this.deleteItem = this.deleteItem.bind(this);
 
     this.state = {
-      currentTutorial: {
+      currentItems: {
         key: null,
         title: "",
 
@@ -20,44 +20,45 @@ export default class Tutorial extends Component {
 
   static getDerivedStateFromProps(nextProps, prevState) {
     const { tutorial } = nextProps;
-    if (prevState.currentTutorial.key !== tutorial.key) {
+    if (prevState.currentItems.key !== tutorial.key) {
       return {
-        currentTutorial: tutorial,
+        currentItems: tutorial,
         message: ""
       };
     }
 
-    return prevState.currentTutorial;
+    return prevState.currentItem;
   }
 
   componentDidMount() {
     this.setState({
-      currentTutorial: this.props.tutorial,
+      currentItems: this.props.tutorial,
     });
   }
 
   onChangeTitle(e) {
+
     const title = e.target.value;
 
     this.setState(function (prevState) {
       return {
-        currentTutorial: {
-          ...prevState.currentTutorial,
+        currentItems: {
+          ...prevState.currentItems,
           title: title,
         },
       };
     });
   }
 
-  updateTutorial() {
+  updateItem() {
     const data = {
-      title: this.state.currentTutorial.title,
+      title: this.state.currentItems.title,
     };
 
-    TutorialDataService.update(this.state.currentTutorial.key, data)
+    ItemlDataService.update(this.state.currentItems.key, data)
       .then(() => {
         this.setState({
-          message: "The tutorial was updated successfully!",
+          message: "The item was updated successfully!",
         });
       })
       .catch((e) => {
@@ -65,8 +66,8 @@ export default class Tutorial extends Component {
       });
   }
 
-  deleteTutorial() {
-    TutorialDataService.delete(this.state.currentTutorial.key)
+  deleteItem() {
+    ItemlDataService.delete(this.state.currentItems.key)
       .then(() => {
         this.props.refreshList();
       })
@@ -76,12 +77,13 @@ export default class Tutorial extends Component {
   }
 
   render() {
-    const { currentTutorial } = this.state;
+
+    const { currentItems } = this.state;
 
     return (
       <div>
-        <h4>Tutorial</h4>
-        {currentTutorial ? (
+        <h4>Item</h4>
+        {currentItems ? (
           <div className="edit-form">
             <form>
               <div className="form-group">
@@ -90,23 +92,21 @@ export default class Tutorial extends Component {
                   type="text"
                   className="form-control"
                   id="title"
-                  value={currentTutorial.title}
+                  value={currentItems.title}
                   onChange={this.onChangeTitle}
                 />
               </div>
             </form>
-
             <button
               className="badge badge-danger mr-2"
-              onClick={this.deleteTutorial}
-            >
+              onClick={this.deleteItem}>
               Delete
             </button>
 
             <button
               type="submit"
               className="badge badge-success"
-              onClick={this.updateTutorial}
+              onClick={this.updateItem}
             >
               Update
             </button>
@@ -115,10 +115,12 @@ export default class Tutorial extends Component {
         ) : (
           <div>
             <br />
-            <p>Please click on a Tutorial...</p>
+            <p>Please click on a item...</p>
           </div>
         )}
       </div>
     );
   }
 }
+
+export default Items
